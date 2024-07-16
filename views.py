@@ -22,10 +22,9 @@ class TaskTickApp:
 
         arquivo_menu = tk.Menu(menu, tearoff=0)
         menu.add_cascade(label="Arquivo", menu=arquivo_menu)
-        #arquivo_menu.add_command(label="Selecionar Banco de Dados", command=self.controller.selecionar_bd)
-        arquivo_menu.add_command(label="Teste", command=None)
+        arquivo_menu.add_command(label="Selecionar Banco de Dados", command=self.controller.selecionar_bd)
         self.notebook.bind("<<NotebookTabChanged>>", self._on_tab_changed)
-
+        self.notebook.bind("<<NotebookTabChanged>>", self.atualizar_atividades) #Linha adicionada para atualizar combobox cada vez que a aba for alterada
     def _create_cadastro_aba(self):
         self.aba_cadastro = ttk.Frame(self.notebook)
         self.notebook.add(self.aba_cadastro, text="Cadastrar Atividade")
