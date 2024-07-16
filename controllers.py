@@ -1,6 +1,6 @@
 from tkinter import filedialog, messagebox
 from models import TaskTickModel
-
+from views import TaskTickApp
 class TaskTickController:
     def __init__(self, view):
         self.view = view
@@ -15,7 +15,7 @@ class TaskTickController:
     def carregar_atividades(self):
         if self.model:
             atividades = self.model.carregar_atividades()
-            self.view.atualizar_atividades(atividades)
+            self.view.atualizar_atividades(atividades) #PONTO A OBSERVAR, NÃO ESTÁ ENTENDENDO COMO UMA FUNÇÃO (atualizar_atividades)
 
     def cadastrar_atividade(self):
         if not self.model:
