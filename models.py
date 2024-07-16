@@ -9,23 +9,23 @@ class TaskTickModel:
     def __init__(self, db_path):
         self.db_path = db_path
 
-#    def carregar_atividades(self):
-#        if not os.path.exists(self.db_path):
-#            return []
-#        df = pd.read_excel(self.db_path, sheet_name="Atividades")
-#        
-#        return df['Projeto'].tolist()
     def carregar_atividades(self):
         if not os.path.exists(self.db_path):
-            messagebox.showinfo("Carregar Atividades", "Nenhum banco de dados selecionado ou banco de dados não encontrado.")
             return []
-
         df = pd.read_excel(self.db_path, sheet_name="Atividades")
-        projetos = df['Projeto'].tolist()
-
-        messagebox.showinfo("Atividades Carregadas", f"Atividades carregadas:\n{', '.join(projetos)}")
-
-        return projetos
+        
+        return df['Projeto'].tolist()
+#    def carregar_atividades(self):
+#        if not os.path.exists(self.db_path):
+#            messagebox.showinfo("Carregar Atividades", "Nenhum banco de dados selecionado ou banco de dados não encontrado.")
+#            return []
+#
+#        df = pd.read_excel(self.db_path, sheet_name="Atividades")
+#        projetos = df['Projeto'].tolist()
+#
+#        messagebox.showinfo("Atividades Carregadas", f"Atividades carregadas:\n{', '.join(projetos)}")
+#
+#        return projetos
     
     def cadastrar_atividade(self, projeto, descricao, cliente):
         nova_atividade = pd.DataFrame([[projeto, descricao, cliente]], columns=['Projeto', 'Descrição', 'Cliente'])
