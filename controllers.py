@@ -31,7 +31,7 @@ class TaskTickController:
             return
         
         try:
-            self.model.cadastrar_atividade(projeto, descricao, cliente)
+            self.model.cadastrar_atividade(projeto, descricao, cliente) #adastrar_atividade(projeto, descricao, cliente)
             messagebox.showinfo("Sucesso", "Atividade cadastrada com sucesso.")
             self.view.limpar_campos_atividade()
             self.carregar_atividades()
