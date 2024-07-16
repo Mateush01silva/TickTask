@@ -23,8 +23,10 @@ class TaskTickApp:
         arquivo_menu = tk.Menu(menu, tearoff=0)
         menu.add_cascade(label="Arquivo", menu=arquivo_menu)
         arquivo_menu.add_command(label="Selecionar Banco de Dados", command=self.controller.selecionar_bd)
+
         self.notebook.bind("<<NotebookTabChanged>>", self._on_tab_changed)
-        self.notebook.bind("<<NotebookTabChanged>>", self.atualizar_atividades) #Linha adicionada para atualizar combobox cada vez que a aba for alterada
+        self.notebook.bind("<<NotebookTabChanged>>", self.atualizar_atividades)  # Linha adicionada para atualizar combobox cada vez que a aba for alterada
+
     def _create_cadastro_aba(self):
         self.aba_cadastro = ttk.Frame(self.notebook)
         self.notebook.add(self.aba_cadastro, text="Cadastrar Atividade")
@@ -42,41 +44,6 @@ class TaskTickApp:
         self.cliente_entry.grid(row=2, column=1, padx=10, pady=5)
 
         ttk.Button(self.aba_cadastro, text="Cadastrar", command=self.controller.cadastrar_atividade).grid(row=3, column=0, columnspan=2, pady=10)
-
-    def _create_horas_aba(self):
-        self.aba_horas = ttk.Frame(self.notebook)
-        self.notebook.add(self.aba_horas, text="Registrar Horas")
-
-        ttk.Label(self.aba_horas, text="Atividade:").grid(row=0, column=0, padx=10, pady=5)
-        self.atividade_combobox = ttk.Combobox(self.aba_horas)
-        self.atividade_combobox.grid(row=0, column=1, padx=10, pady=5)
-
-        ttk.Label(self.aba_horas, text="Data:").grid(row=1, column=0, padx=10, pady=5)
-        self.data_entry = DateEntry(self.aba_horas)
-        self.data_entry.grid(row=1, column=1, padx=10, pady=5)
-
-        ttk.Label(self.aba_horas, text="Hora Início:").grid(row=2, column=0, padx=10, pady=5)
-        self.hora_inicio_entry = ttk.Entry(self.aba_horas)
-        self.hora_inicio_entry.grid(row=2, column=1, padx=10, pady=5)
-
-        ttk.Label(self.aba_horas, text="Hora Fim:").grid(row=3, column=0, padx=10, pady=5)
-        self.hora_fim_entry = ttk.Entry(self.aba_horas)
-        self.hora_fim_entry.grid(row=3, column=1, padx=10, pady=5)
-
-        ttk.Button(self.aba_horas, text="Registrar", command=self.controller.registrar_horas).grid(row=4, column=0, columnspan=2, pady=10)
-
-    def limpar_campos_atividade(self):
-        self.projeto_entry.delete(0, tk.END)
-        self.descricao_entry.delete(0, tk.END)
-        self.cliente_entry.delete(0, tk.END)
-
-    def atualizar_atividades(self, atividades):
-        self.atividade_combobox['values'] = atividades
-
-    def _on_tab_changed(self, event):
-        if self.notebook.index("current") == 1:  # Aba de registro de horas
-            self.controller.carregar_atividades()
-    # Dentro da classe TaskTickApp
 
     def _create_horas_aba(self):
         self.aba_horas = ttk.Frame(self.notebook)
@@ -127,8 +94,20 @@ class TaskTickApp:
 
         ttk.Button(time_selector, text="OK", command=lambda: set_time(int(hour_var.get()), int(minute_var.get()))).grid(row=2, column=0, columnspan=2, pady=10)
 
+    def limpar_campos_atividade(self):
+        self.projeto_entry.delete(0, tk.END)
+        self.descricao_entry.delete(0, tk.END)
+        self.cliente_entry.delete(0, tk.END)
+
+    def atualizar_atividades(self, atividades):
+        self.atividade_combobox['values'] = atividades
+
+    def _on_tab_changed(self, event):
+        if self.notebook.index("current") == 1:  # Aba de registro de horas
+            self.controller.carregar_atividades()
 
 if __name__ == "__main__":
     root = tk.Tk()
     app = TaskTickApp(root)
     root.mainloop()
+

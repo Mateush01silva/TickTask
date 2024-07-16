@@ -1,6 +1,6 @@
 from tkinter import filedialog, messagebox
 from models import TaskTickModel
-from views import TaskTickApp
+
 class TaskTickController:
     def __init__(self, view):
         self.view = view
