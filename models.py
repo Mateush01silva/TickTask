@@ -13,6 +13,7 @@ class TaskTickModel:
             return []
         df = pd.read_excel(self.db_path, sheet_name="Atividades")
         return df['Projeto'].tolist()
+    
     def cadastrar_atividade(self, projeto, descricao, cliente):
         nova_atividade = pd.DataFrame([[projeto, descricao, cliente]], columns=['Projeto', 'Descrição', 'Cliente'])
         try:
