@@ -11,7 +11,7 @@ class TaskTickController:
         if db_path:
             self.model = TaskTickModel(db_path)
             self.carregar_atividades()
-
+            messagebox.showinfo("Sucesso", "Banco de dados carregado com sucesso.")
     def carregar_atividades(self):
         if self.model:
             atividades = self.model.carregar_atividades()
