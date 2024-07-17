@@ -1,5 +1,6 @@
 from tkinter import filedialog, messagebox
 from models import TaskTickModel
+from datetime import datetime, timedelta
 
 class TaskTickController:
     def __init__(self, view):
@@ -58,3 +59,76 @@ class TaskTickController:
             self.view.limpar_campos_horas()
         except PermissionError as e:
             messagebox.showerror("Erro", str(e))
+
+    def calcular_horas_trabalhadas(self, atividade):
+        if not self.model:
+            return "Selecione um banco de dados primeiro."
+
+        try:
+            df = self.model.carregar_atividades()
+            filtro = df[df['Atividade'] == atividade]
+            horas_trabalhadas = filtro['Horas Trabalhadas'].sum()
+            return f"{horas_trabalhadas} horas"
+        except Exception as e:
+            return f"Erro ao calcular horas trabalhadas: {str(e)}"
+
+    def calcular_dias_corridos(self):
+        if not self.model:
+            return "Selecione um banco de dados primeiro."
+
+        try:
+            df = self.model.carregar_atividades()
+            dias_corridos = len(df['Data'].unique())
+            return str(dias_corridos)
+        except Exception as e:
+            return f"Erro ao calcular dias corridos: {str(e)}"
+
+    def calcular_dias_trabalhados(self):
+        if not self.model:
+            return "Selecione um banco de dados primeiro."
+
+        try:
+            df = self.model.carregar_atividades()
+            dias_trabalhados = df.shape[0]  # Assumindo que cada linha é um registro de atividade
+            return str(dias_trabalhados)
+        except Exception as e:
+            return f"Erro ao calcular dias trabalhados: {str(e)}"
+
+    def calcular_media_horas_dia(self):
+        if not self.model:
+            return "Selecione um banco de dados primeiro."
+
+        try:
+            df = self.model.carregar_atividades()
+            total_horas = df['Horas Trabalhadas'].sum()
+            dias_corridos = len(df['Data'].unique())
+            if dias_corridos > 0:
+                media_horas_dia = total_horas / dias_corridos
+                return f"{media_horas_dia:.2f} horas por dia"
+            else:
+                return "Nenhum dia registrado ainda"
+        except Exception as e:
+            return f"Erro ao calcular média horas/dia: {str(e)}"
+
+    def calcular_maximo_horas_dia(self):
+        if not self.model:
+            return "Selecione um banco de dados primeiro."
+
+        try:
+            df = self.model.carregar_atividades()
+            maximo_horas_dia = df['Horas Trabalhadas'].max()
+            return f"{maximo_horas_dia} horas"
+        except Exception as e:
+            return f"Erro ao calcular máximo horas/dia: {str(e)}"
+
+    def calcular_minimo_horas_dia(self):
+        if not self.model:
+            return "Selecione um banco de dados primeiro."
+
+        try:
+            df = self.model.carregar_atividades()
+            minimo_horas_dia = df['Horas Trabalhadas'].min()
+            return f"{minimo_horas_dia} horas"
+        except Exception as e:
+            return f"Erro ao calcular mínimo horas/dia: {str(e)}"
+
