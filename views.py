@@ -22,7 +22,7 @@ class TaskTickApp:
 
         arquivo_menu = tk.Menu(menu, tearoff=0)
         menu.add_cascade(label="Arquivo", menu=arquivo_menu)
-        arquivo_menu.add_command(label="Selecionar Banco de Dados", command=self.controller.selecionar_bd)
+        arquivo_menu.add_command(label="Selecionar Banco de Dados Atividades", command=self.controller.selecionar_bd)
 
         self.notebook.bind("<<NotebookTabChanged>>", self._on_tab_changed)
         self.notebook.bind("<<NotebookTabChanged>>", self.atualizar_atividades)  # Linha adicionada para atualizar combobox cada vez que a aba for alterada
@@ -57,8 +57,9 @@ class TaskTickApp:
         self.data_entry = DateEntry(self.aba_horas)
         self.data_entry.grid(row=1, column=1, padx=10, pady=5)
 
-        self._add_time_selector(self.aba_horas, "Hora Início:", 2)
-        self._add_time_selector(self.aba_horas, "Hora Fim:", 3)
+        # Adicionar o seletor de hora de início e hora de fim
+        self.hora_inicio_entry = self._add_time_selector(self.aba_horas, "Hora Início:", 2)
+        self.hora_fim_entry = self._add_time_selector(self.aba_horas, "Hora Fim:", 3)
 
         ttk.Button(self.aba_horas, text="Registrar", command=self.controller.registrar_horas).grid(row=4, column=0, columnspan=2, pady=10)
 
@@ -66,8 +67,32 @@ class TaskTickApp:
         ttk.Label(parent, text=label_text).grid(row=row, column=0, padx=10, pady=5)
         time_entry = ttk.Entry(parent)
         time_entry.grid(row=row, column=1, padx=10, pady=5)
-        time_button = ttk.Button(parent, text="Selecionar Hora", command=lambda: self._show_time_selector(time_entry))
-        time_button.grid(row=row, column=2, padx=5, pady=5)
+        ttk.Button(parent, text="Selecionar", command=lambda: self._show_time_selector(time_entry)).grid(row=row, column=2, padx=10, pady=5)
+        return time_entry
+
+#    def _create_horas_aba(self):
+#        self.aba_horas = ttk.Frame(self.notebook)
+#        self.notebook.add(self.aba_horas, text="Registrar Horas")
+#
+#        ttk.Label(self.aba_horas, text="Atividade:").grid(row=0, column=0, padx=10, pady=5)
+#        self.atividade_combobox = ttk.Combobox(self.aba_horas)
+#        self.atividade_combobox.grid(row=0, column=1, padx=10, pady=5)
+#
+#        ttk.Label(self.aba_horas, text="Data:").grid(row=1, column=0, padx=10, pady=5)
+#        self.data_entry = DateEntry(self.aba_horas)
+#        self.data_entry.grid(row=1, column=1, padx=10, pady=5)
+#
+#        self._add_time_selector(self.aba_horas, "Hora Início:", 2)
+#        self._add_time_selector(self.aba_horas, "Hora Fim:", 3)
+#
+#        ttk.Button(self.aba_horas, text="Registrar", command=self.controller.registrar_horas).grid(row=4, column=0, columnspan=2, pady=10)
+#
+#    def _add_time_selector(self, parent, label_text, row):
+#        ttk.Label(parent, text=label_text).grid(row=row, column=0, padx=10, pady=5)
+#        time_entry = ttk.Entry(parent)
+#        time_entry.grid(row=row, column=1, padx=10, pady=5)
+#        time_button = ttk.Button(parent, text="Selecionar Hora", command=lambda: self._show_time_selector(time_entry))
+#        time_button.grid(row=row, column=2, padx=5, pady=5)
 
     def _show_time_selector(self, entry):
         def set_time(hour, minute):
