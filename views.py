@@ -9,7 +9,9 @@ class TaskTickApp:
         self.root = root
         self.controller = TaskTickController(self)
         self.root.title("TaskTick")
-
+        
+        self.resumo_atividade_combobox = ttk.Combobox(values=self.controller.resumo_carregar_atividades())
+        
         self.notebook = ttk.Notebook(self.root)
         self.notebook.pack(pady=10, expand=True)
 
@@ -37,8 +39,8 @@ class TaskTickApp:
         resumo_window.title("Resumo")
 
         ttk.Label(resumo_window, text="Selecione a Atividade:").grid(row=0, column=0, padx=10, pady=5)
-        resumo_atividade_combobox = ttk.Combobox(resumo_window, values=self.controller.resumo_carregar_atividades())
-        resumo_atividade_combobox.grid(row=0, column=1, padx=10, pady=5)
+        self.resumo_atividade_combobox = ttk.Combobox(resumo_window, values= self.controller.resumo_carregar_atividades())
+        self.resumo_atividade_combobox.grid(row=0, column=1, padx=10, pady=5)
 
         ttk.Label(resumo_window, text="Horas Trabalhadas:").grid(row=1, column=0, padx=10, pady=5)
         horas_trabalhadas_label = ttk.Label(resumo_window, text="")
