@@ -25,7 +25,7 @@ class TaskTickApp:
         arquivo_menu.add_command(label="Selecionar Banco de Dados Atividades", command=self.controller.selecionar_bd)
 
         self.notebook.bind("<<NotebookTabChanged>>", self._on_tab_changed)
-        self.notebook.bind("<<NotebookTabChanged>>", self.atualizar_atividades)  # Linha adicionada para atualizar combobox cada vez que a aba for alterada
+        self.notebook.bind("<<NotebookTabChanged>>", TaskTickController.carregar_atividades)  # Linha adicionada para atualizar combobox cada vez que a aba for alterada
 
     def _create_cadastro_aba(self):
         self.aba_cadastro = ttk.Frame(self.notebook)
