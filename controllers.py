@@ -55,5 +55,6 @@ class TaskTickController:
         try:
             self.model.registrar_horas(atividade, data, hora_inicio, hora_fim)
             messagebox.showinfo("Sucesso", "Horas registradas com sucesso.")
+            self.view.limpar_campos_horas()
         except PermissionError as e:
             messagebox.showerror("Erro", str(e))
