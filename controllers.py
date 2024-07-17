@@ -16,7 +16,14 @@ class TaskTickController:
     def carregar_atividades(self):
         if self.model:
             atividades = self.model.carregar_atividades()
-            self.view.atualizar_atividades(atividades) #PONTO A OBSERVAR, NÃO ESTÁ ENTENDENDO COMO UMA FUNÇÃO (atualizar_atividades)
+            self.view.atividade_combobox['values'] = atividades #linha teste
+            self.view.atividade_combobox.set('') #linha teste
+
+    def resumo_carregar_atividades(self):
+        if self.model:
+            atividades = self.model.carregar_atividades()
+            self.view.resumo_atividade_combobox['values'] = atividades #linha teste
+            self.view.resumo_atividade_combobox.set('') #linha teste
 
     def cadastrar_atividade(self):
         if not self.model:
