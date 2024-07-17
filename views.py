@@ -37,8 +37,8 @@ class TaskTickApp:
         resumo_window.title("Resumo")
 
         ttk.Label(resumo_window, text="Selecione a Atividade:").grid(row=0, column=0, padx=10, pady=5)
-        atividade_combobox2 = ttk.Combobox(resumo_window, values=self.controller.carregar_atividades())
-        atividade_combobox2.grid(row=0, column=1, padx=10, pady=5)
+        resumo_atividade_combobox = ttk.Combobox(resumo_window, values=self.controller.resumo_carregar_atividades())
+        resumo_atividade_combobox.grid(row=0, column=1, padx=10, pady=5)
 
         ttk.Label(resumo_window, text="Horas Trabalhadas:").grid(row=1, column=0, padx=10, pady=5)
         horas_trabalhadas_label = ttk.Label(resumo_window, text="")
@@ -64,9 +64,9 @@ class TaskTickApp:
         minimo_horas_dia_label = ttk.Label(resumo_window, text="")
         minimo_horas_dia_label.grid(row=6, column=1, padx=10, pady=5)
 
-    def atualizar_resumo():
+    def atualizar_resumo(self):
             # Lógica para atualizar as informações do resumo
-            atividade_selecionada = atividade_combobox2.get()
+            atividade_selecionada = self.resumo_atividade_combobox.get()
             horas_trabalhadas = self.controller.calcular_horas_trabalhadas(atividade_selecionada)
             dias_corridos = self.controller.calcular_dias_corridos()
             dias_trabalhados = self.controller.calcular_dias_trabalhados()
@@ -74,47 +74,15 @@ class TaskTickApp:
             maximo_horas_dia = self.controller.calcular_maximo_horas_dia()
             minimo_horas_dia = self.controller.calcular_minimo_horas_dia()
 
-            horas_trabalhadas_label.config(text=horas_trabalhadas)
-            dias_corridos_label.config(text=dias_corridos)
-            dias_trabalhados_label.config(text=dias_trabalhados)
-            media_horas_dia_label.config(text=media_horas_dia)
-            maximo_horas_dia_label.config(text=maximo_horas_dia)
-            minimo_horas_dia_label.config(text=minimo_horas_dia)
+            self.horas_trabalhadas_label.config(text=horas_trabalhadas)
+            self.dias_corridos_label.config(text=dias_corridos)
+            self.dias_trabalhados_label.config(text=dias_trabalhados)
+            self.media_horas_dia_label.config(text=media_horas_dia)
+            self.maximo_horas_dia_label.config(text=maximo_horas_dia)
+            self.minimo_horas_dia_label.config(text=minimo_horas_dia)
 
-            ttk.Button(resumo_window, text="Atualizar", command=atualizar_resumo).grid(row=7, column=0, columnspan=2, pady=10)
+            ttk.Button(self.resumo_window, text="Atualizar", command=self.atualizar_resumo).grid(row=7, column=0, columnspan=2, pady=10)
 
-    # Métodos existentes na classe TaskTickApp
-
-    """ class TaskTickApp:
-        def __init__(self, root):
-            self.root = root
-            self.controller = TaskTickController(self)
-            self.root.title("TaskTick")
-
-            self.notebook = ttk.Notebook(self.root)
-            self.notebook.pack(pady=10, expand=True)
-
-            self._create_cadastro_aba()
-            self._create_horas_aba()
-
-            # Menu para selecionar o banco de dados
-            menu = tk.Menu(self.root)
-            self.root.config(menu=menu)
-
-            arquivo_menu = tk.Menu(menu, tearoff=0)
-            menu.add_cascade(label="Arquivo", menu=arquivo_menu)
-            arquivo_menu.add_command(label="Selecionar Banco de Dados Atividades", command=self.controller.selecionar_bd)
-
-            resumo = tk.Menu(self.root)
-            self.root.config(resumo=resumo)
-
-            resumo_menu = tk.Menu(resumo, tearoff=0)
-            resumo.add_cascade(label="Resumo",resumo=resumo_menu)
-            resumo_menu.add_command(label="Abrir Resumo", command=self.abrir_resumo)
-
-            self.notebook.bind("<<NotebookTabChanged>>", self._on_tab_changed)
-            self.notebook.bind("<<NotebookTabChanged>>", TaskTickController.carregar_atividades)  # Linha adicionada para atualizar combobox cada vez que a aba for alterada
-        """     
     def _create_cadastro_aba(self):
         self.aba_cadastro = ttk.Frame(self.notebook)
         self.notebook.add(self.aba_cadastro, text="Cadastrar Atividade")
@@ -167,21 +135,20 @@ class TaskTickApp:
         time_selector = Toplevel(self.root)
         time_selector.title("Selecionar Hora")
 
-        hours = [f"{h:02d}" for h in range(24)]
-        minutes = [f"{m:02d}" for m in range(0, 60, 5)]
+        hours = [f"{i:02d}" for i in range(24)]
+        minutes = [f"{i:02d}" for i in range(60)]
 
-        hour_var = tk.StringVar(value=hours[0])
-        minute_var = tk.StringVar(value=minutes[0])
+        hour_var = tk.StringVar(time_selector)
+        hour_var.set(hours[0])
+        hour_menu = tk.OptionMenu(time_selector, hour_var, *hours)
+        hour_menu.pack(side=tk.LEFT, padx=5)
 
-        ttk.Label(time_selector, text="Hora:").grid(row=0, column=0, padx=10, pady=5)
-        hour_combobox = ttk.Combobox(time_selector, textvariable=hour_var, values=hours)
-        hour_combobox.grid(row=0, column=1, padx=10, pady=5)
+        minute_var = tk.StringVar(time_selector)
+        minute_var.set(minutes[0])
+        minute_menu = tk.OptionMenu(time_selector, minute_var, *minutes)
+        minute_menu.pack(side=tk.LEFT, padx=5)
 
-        ttk.Label(time_selector, text="Minuto:").grid(row=1, column=0, padx=10, pady=5)
-        minute_combobox = ttk.Combobox(time_selector, textvariable=minute_var, values=minutes)
-        minute_combobox.grid(row=1, column=1, padx=10, pady=5)
-
-        ttk.Button(time_selector, text="OK", command=lambda: set_time(int(hour_var.get()), int(minute_var.get()))).grid(row=2, column=0, columnspan=2, pady=10)
+        ttk.Button(time_selector, text="OK", command=lambda: set_time(int(hour_var.get()), int(minute_var.get()))).pack(pady=5)
 
     def limpar_campos_atividade(self):
         self.projeto_entry.delete(0, tk.END)
@@ -203,6 +170,6 @@ class TaskTickApp:
 
 if __name__ == "__main__":
     root = tk.Tk()
+    controller = TaskTickController(view=None)
     app = TaskTickApp(root)
     root.mainloop()
-
